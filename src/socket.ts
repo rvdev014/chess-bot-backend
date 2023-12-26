@@ -52,7 +52,12 @@ export default function socketInit(server: HttpServer) {
             queue[socket.id] = currentClient
         })
 
+        socket.on("game:search-cancel", () => {
+            delete queue[socket.id]
+        });
+
         socket.on("game:move", async (movement, gameFen) => {
+            if (!games[socket.data.roomId]) return
             socket.to(socket.data.roomId).emit("game:move", movement)
             games[socket.data.roomId].lastFen = gameFen
         })
@@ -72,7 +77,15 @@ export default function socketInit(server: HttpServer) {
             const roomId = socket.data.roomId
             if (roomId) {
                 socket.to(roomId).emit("game:disconnected")
+                io.in(roomId).fetchSockets().then((sockets) => {
+                    delete games[roomId]
+                    sockets.forEach((socket) => {
+                        socket.leave(roomId)
+                    })
+                })
             }
+
+            delete queue[socket.id]
         })
     })
 
