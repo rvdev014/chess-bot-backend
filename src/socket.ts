@@ -1,7 +1,7 @@
 import {Server as HttpServer} from "http"
 import {Server as SocketServer} from "socket.io"
 import {v4 as uuidv4} from "uuid"
-import {TGame, TQueue} from "./types";
+import {IGameOverState, IMoveState, TGame, TQueue} from "./types";
 
 export const games: TGame = {}
 export const queue: TQueue = {}
@@ -32,7 +32,8 @@ export default function socketInit(server: HttpServer) {
                     roomId,
                     white: opponent,
                     black: currentClient,
-                    lastFen: null
+                    currentTurn: 'white',
+                    lastFen: null,
                 }
 
                 socket.join(roomId)
@@ -44,8 +45,8 @@ export default function socketInit(server: HttpServer) {
                     })
                 })
 
-                socket.emit("game:started", opponent, 'b', roomId)
-                io.to(opponent.socketId).emit("game:started", currentClient, 'w', roomId)
+                socket.emit("game:started", opponent, 'black', roomId)
+                io.to(opponent.socketId).emit("game:started", currentClient, 'white', roomId)
                 return
             }
 
@@ -56,24 +57,50 @@ export default function socketInit(server: HttpServer) {
             delete queue[socket.id]
         });
 
-        socket.on("game:move", async (movement, gameFen) => {
-            if (!games[socket.data.roomId]) return
-            socket.to(socket.data.roomId).emit("game:move", movement)
-            games[socket.data.roomId].lastFen = gameFen
+        socket.on("game:move", async (moveState: IMoveState) => {
+            const roomId = socket.data.roomId;
+            if (!games[roomId]) return
+
+            const game = games[roomId]
+            games[roomId] = {
+                ...game,
+                white: {...game.white, timeLeft: moveState.whiteTimeLeft},
+                black: {...game.black, timeLeft: moveState.blackTimeLeft},
+                currentTurn: moveState.side === 'white' ? 'black' : 'white',
+                lastFen: moveState.lastFen
+            }
+
+            socket.to(roomId).emit("game:move", moveState)
         })
 
         socket.on("game:join-guest", async (roomId) => {
             const game = games[roomId]
-            console.log('roomId', roomId)
-            console.log('game', game)
 
             socket.join(roomId)
             socket.emit("game:join-guest", game)
             socket.to(roomId).emit("game:join-view")
         })
 
+        socket.on("game:over", async (gameOverState: IGameOverState) => {
+            const roomId = socket.data.roomId;
+            if (!games[roomId]) return
+
+            games[roomId] = {
+                ...games[roomId],
+                winner: gameOverState.winner,
+                reason: gameOverState.reason,
+                white: {...games[roomId].white, timeLeft: gameOverState.whiteTimeLeft},
+                black: {...games[roomId].black, timeLeft: gameOverState.blackTimeLeft},
+            }
+
+            // save game to DB
+
+            socket.to(roomId).emit("game:over", games[roomId])
+
+            delete games[roomId]
+        })
+
         socket.on("disconnect", async () => {
-            // check if users left in the room
             const roomId = socket.data.roomId
             if (roomId) {
                 socket.to(roomId).emit("game:disconnected")
