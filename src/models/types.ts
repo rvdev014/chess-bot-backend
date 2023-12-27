@@ -11,6 +11,8 @@ export type UserAttributes = {
     active: boolean;
     age: number;
     socket_id: string | null;
+    last_name: string | null;
+    language_code: string | null;
 };
 
 // we're telling the Model that 'id' is optional

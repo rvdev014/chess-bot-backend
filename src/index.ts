@@ -6,6 +6,9 @@ import {createServer} from "http"
 import socketInit from "./socket"
 import sequelize from "./db"
 import GameController from "./controllers/GameController"
+import {Telegraf} from "telegraf";
+import {runBot} from "./bot";
+import {BOT_TOKEN, PORT, WEBHOOK_DOMAIN, WEBHOOK_PATH} from "./config";
 
 const app = express()
 
@@ -26,10 +29,17 @@ redis.on('connect', () => {
     redis.flushDb()
 })*/
 
-server.listen(process.env.PORT, async () => {
+const bot = new Telegraf(BOT_TOKEN);
+
+if (WEBHOOK_DOMAIN) {
+    app.use(bot.webhookCallback(WEBHOOK_PATH));
+}
+
+server.listen(PORT, async () => {
     try {
         await sequelize.authenticate()
-        // await sequelize.sync({alter: true})
+        await sequelize.sync({alter: true})
+        await runBot(bot);
         console.log(`Server is running on port ${process.env.PORT}`)
     } catch (e: any) {
         console.error(`App crashed: ${e.message}`)
