@@ -43,10 +43,11 @@ export const from = (ctx) => {
         from = ctx.message.from
     } else if (ctx?.update?.message?.from?.id) {
         from = ctx.update.message.from
-    } else if (ctx?.update?.callback_query?.message?.from?.id) {
-        from = ctx.update.callback_query.message.from
+    } else if (ctx?.update?.callback_query?.message?.chat?.id) {
+        from = ctx.update.callback_query.message.chat
     }
 
+    console.log(from)
     return from;
 }
 export const locale = (ctx) => {

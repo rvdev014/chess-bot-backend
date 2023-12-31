@@ -1,7 +1,13 @@
-import {addBackButton, addGenderButton, addLanguageButton, addProfileButton} from "../utils/buttons/userButtons.js";
+import {
+    addBackButton,
+    addGenderButton,
+    addLanguageButton,
+    addProfileButton
+} from "../utils/buttons/userButtons.js";
 import {locale, sceneIds} from "../utils/consts.js";
 import {getMessageByLang} from "../helpers/other.js";
-import {User} from "../models/models.ts";
+import {Friends, User} from "../models/models.ts";
+import {Op} from "sequelize";
 
 export async function handleActionProfile(ctx) {
     try {
@@ -76,6 +82,35 @@ export async function handleProfileInvitationLink(ctx) {
             `<b>${message}</b>\n\nhttps://t.me/${process.env.BOT_NAME}?start=${ctx.from.id}`,
             addBackButton(locale(ctx))
         )
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export async function handleProfileFriendList(ctx) {
+    try {
+        await ctx.deleteMessage()
+        let message = '<b>' + getMessageByLang('friend_list', locale(ctx)) + '\n</b>'
+
+        const friends = await Friends.findAll({
+            where: {[Op.or]: [{user_id: ctx.from.id}, {friend_id: ctx.from.id}]}
+        })
+
+        const list = [];
+
+        friends.map((friend, key) => {
+            if (friend?.friend_id !== ctx.from.id) {
+                list.push(`${key + 1}) <b>${friend?.friend_name}</b>\n`)
+            } else if (friend?.user_id !== ctx.from.id) {
+                list.push(`${key + 1}) <b>${friend?.user_name}</b>\n`)
+            }
+        })
+
+        for (let i = 0; list.length > i; i++) {
+            message += list[i]
+        }
+
+        await ctx.replyWithHTML(message, addProfileButton(ctx))
     } catch (e) {
         console.log(e)
     }
