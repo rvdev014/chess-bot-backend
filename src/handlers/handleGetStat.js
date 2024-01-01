@@ -5,7 +5,7 @@ import {locale} from "../utils/consts";
 
 export default async function handleGetStat(ctx) {
     await ctx.answerCbQuery()
-    const chats = await Chat.scope('active').findAll({raw: true, where: {active: true}})
+    const chats = await Chat.findAll()
 
     const allMembersCount = await getChatMembersCount(ctx, chats)
 

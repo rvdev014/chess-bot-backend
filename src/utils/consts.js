@@ -47,7 +47,6 @@ export const from = (ctx) => {
         from = ctx.update.callback_query.message.chat
     }
 
-    console.log(from)
     return from;
 }
 export const locale = (ctx) => {

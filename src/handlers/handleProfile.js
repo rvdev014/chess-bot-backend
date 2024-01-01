@@ -2,7 +2,7 @@ import {
     addBackButton,
     addGenderButton,
     addLanguageButton,
-    addProfileButton
+    addProfileButton, webAppButton
 } from "../utils/buttons/userButtons.js";
 import {locale, sceneIds} from "../utils/consts.js";
 import {getMessageByLang} from "../helpers/other.js";
@@ -11,16 +11,33 @@ import {Op} from "sequelize";
 
 export async function handleActionProfile(ctx) {
     try {
-        // await ctx.deleteMessage()
+        await ctx.deleteMessage()
         await ctx.reply(getMessageByLang('profile_desc', locale(ctx)), addProfileButton(locale(ctx)))
     } catch (e) {
         console.log('handleActionProfile', e.message)
     }
 }
 
+export async function handleAboutMe(ctx) {
+    try {
+        await ctx.deleteMessage()
+        await ctx.reply(getMessageByLang('about_me_desc', locale(ctx)), addBackButton(ctx))
+    } catch (e) {
+        console.log('handleAboutMe', e.message)
+    }
+}
+
 export async function handleProfile(ctx) {
     try {
         await ctx.reply(getMessageByLang('profile_desc', locale(ctx)), addProfileButton(locale(ctx)))
+    } catch (e) {
+        console.log('handleProfile', e.message)
+    }
+}
+
+export async function handlePlayGame(ctx) {
+    try {
+        await ctx.reply(getMessageByLang('play_game', locale(ctx)), webAppButton(ctx))
     } catch (e) {
         console.log('handleProfile', e.message)
     }
@@ -80,7 +97,7 @@ export async function handleProfileInvitationLink(ctx) {
         const message = getMessageByLang('invite_link', locale(ctx))
         await ctx.replyWithHTML(
             `<b>${message}</b>\n\nhttps://t.me/${process.env.BOT_NAME}?start=${ctx.from.id}`,
-            addBackButton(locale(ctx))
+            addBackButton(ctx)
         )
     } catch (e) {
         console.log(e)
@@ -110,7 +127,7 @@ export async function handleProfileFriendList(ctx) {
             message += list[i]
         }
 
-        await ctx.replyWithHTML(message, addProfileButton(ctx))
+        await ctx.replyWithHTML(message, addProfileButton(locale(ctx)))
     } catch (e) {
         console.log(e)
     }

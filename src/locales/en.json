@@ -43,7 +43,7 @@
     "newsletter": "Newsletter",
     "channel_list": "Channel list (page no. :userPage)",
     "show_list": "List of impressions (page no. :userPage)",
-    "show_remove": "Delete show\\n\\n<b>:title :active</b>",
+    "show_remove": "Delete show\n\n<b>:title :active</b>",
     "channel_already_added": "This channel has already been added",
     "cancel": "Cancel 🚫",
     "canceled": "Canceled.",
@@ -60,9 +60,9 @@
     "send_referral_link": "Send a ref.",
     "send_correct_age": "Submit the correct age!",
     "send_age": "Enter your age with a number from 7 to 100!",
-    "referral_stat": "Reef statistics <b>:referral</b>:\\n\n <b>:usersByRef</b>\nNumber of chats by reference: <b>:chatsByRef</b>\nTotal number of audience in these chats: <b>:chatMembersCount</b>\\n",
+    "referral_stat": "Reef statistics <b>:referral</b>:\n\n <b>:usersByRef</b>\nNumber of chats by reference: <b>:chatsByRef</b>\nTotal number of audience in these chats: <b>:chatMembersCount</b>\n",
     "error_dump_db": "Oops! ",
-    "channel_stat": "Bot statistics:\\n\n <b>:chats</b>\nTotal number of audience in chats: <b>:allMembersCount</b>\\n",
+    "channel_stat": "Bot statistics:\n <b>:chats</b>\nTotal number of audience in chats: <b>:allMembersCount</b>\n",
     "subs_already_paid": "You already have a subscription connected to: :payment_expired_at",
     "choose_tariff": "Select a tariff plan",
     "choose_tariff_error": "Error when choosing a tariff",
@@ -77,5 +77,9 @@
     "donate_tariff": "\uD83C\uDF1F Welcome to our creative space! \uD83C\uDF1F\n\nWe invite you to be part of a unique project where every contribution is not only appreciated but also welcomed. Our community strives for constant growth and the implementation of exciting ideas. To achieve this goal, we're launching a donation program that allows you not only to support the project but also to actively participate in shaping it.\n\n\uD83D\uDE80 Why your donation is crucial:\n\nInnovation and Creativity: Your donations will be directly used to implement new ideas and concepts that will make our project unique and engaging.\n\nEnhancement of Features: We aim for continuous improvement of our services. Your financial contributions will help us introduce enhancements, making the project more convenient and functional for all participants.\n\nExclusive Bonuses: Our donors receive special privileges, including exclusive access to content, special events, and other pleasant bonuses as a token of gratitude for your support.\n\nCollaborative Creativity: Your contribution opens the opportunity to suggest your own ideas and influence the project's development. We value your perspective and strive to create an environment where everyone can contribute.\n\n\uD83C\uDDFA\uD83C\uDDF3 How we use donations specifically:\n\nDevelopment of New Features and Content: Your support funds research and development of new features, enriching the experience for our users.\n\nTechnology Upgrades: We invest in modern technologies to ensure the stable and innovative operation of our project.\n\nAwards and Rewards: Donors receive special benefits, such as exclusive content, early access to updates, and participation in exclusive events.\n\n\uD83D\uDE4F Your Support Matters!\n\nWe deeply appreciate every donation as it not only provides financial support but also serves as a source of inspiration for us. With your help, we are creating something amazing, and we invite you to be part of this exciting journey.\n\n\uD83C\uDF10 Join us, influence the future, and let's create something extraordinary together! \uD83C\uDF10\n\nThank you for your contribution to our collective creative adventure!<b>\nAs soon as we reach the amount of $10,000, we will release a functionality where you can add any of your voices and voice them using them.\uD83E\uDD29</b>",
     "donate_tariff_error": "Select a different donation amount",
     "limit_200": "The maximum number of characters at a time is 200.",
-    "friend_list": "Friends list \uD83E\uDEC2"
+    "friend_list": "Friends list \uD83E\uDEC2",
+    "play_game": "Go to game",
+    "play": "Play",
+    "about_me": "About me",
+    "about_me_desc": "Name: :name\n Age: :age\n Gender: :gender\n Language: :language\n Friends: :friends_count\n Total games: :total_games\n Games won: :games_won\n Lost games: :games_lost\n"
 }

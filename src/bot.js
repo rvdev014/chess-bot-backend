@@ -17,7 +17,7 @@ import {
     DATA_PROFILE,
     DATA_GENDER_FEMALE,
     DATA_GENDER_MALE,
-    DATA_GENDER, DATA_AGE, DATA_INVITATION_LINK, DATA_LANGUAGE, DATA_FRIEND_LIST,
+    DATA_GENDER, DATA_AGE, DATA_INVITATION_LINK, DATA_LANGUAGE, DATA_FRIEND_LIST, DATA_ABOUT_ME,
 } from "./utils/buttons/userButtons.js";
 import {handleAddGender, sceneAddAge} from "./handlers/handleUserRegister.js";
 import {
@@ -35,7 +35,7 @@ import {
     DATA_TARIFF_PLAN_WEEK
 } from "./utils/buttons/paymentButtons.js";
 import {
-    handleActionProfile, handleLanguage,
+    handleActionProfile, handleLanguage, handlePlayGame,
     handleProfile,
     handleProfileAge, handleProfileFriendList,
     handleProfileGender,
@@ -125,7 +125,9 @@ export async function runBot(bot) {
     bot.action(DATA_PAYMENT, handlePaymentSendRequest)
 
     bot.command('profile', handleProfile)
+    bot.command('play', handlePlayGame)
     bot.action(DATA_PROFILE, handleActionProfile)
+    bot.action(DATA_ABOUT_ME, handleActionProfile)
     bot.action(DATA_GENDER, handleProfileGender)
     bot.action(DATA_AGE, handleProfileAge)
     bot.action(DATA_LANGUAGE, handleProfileLanguage)
