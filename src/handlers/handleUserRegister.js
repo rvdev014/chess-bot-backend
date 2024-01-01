@@ -55,6 +55,6 @@ export const sceneAddAge = new Scenes.WizardScene(sceneIds.user.SCENE_ADD_AGE, a
 sceneAddAge.enter(ctx => {
     return ctx.reply(
         getMessageByLang('send_age', locale(ctx)),
-        addBackButton(locale(ctx))
+        addBackButton(ctx)
     )
 })

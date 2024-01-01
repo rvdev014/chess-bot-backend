@@ -8,18 +8,20 @@ export const DATA_GENDER = 'DATA_GENDER'
 export const DATA_AGE = 'DATA_AGE'
 export const DATA_LANGUAGE = 'DATA_LANGUAGE'
 export const DATA_CHANGE_LANGUAGE = 'DATA_CHANGE_LANGUAGE'
+export const DATA_FRIEND_LIST = 'DATA_FRIEND_LIST'
+export const DATA_ABOUT_ME = 'DATA_ABOUT_ME'
 export const DATA_INVITATION_LINK = 'DATA_INVITATION_LINK'
 export const DATA_GENDER_MALE = 'DATA_GENDER_MALE'
 export const DATA_GENDER_FEMALE = 'DATA_GENDER_FEMALE'
 
-export function addGenderButton(locale) {
+export function addGenderButton(ctx) {
     return Markup.inlineKeyboard([
         [
-            Markup.button.callback(getMessageByLang('boy', locale), DATA_GENDER_MALE),
-            Markup.button.callback(getMessageByLang('girl', locale), DATA_GENDER_FEMALE),
+            Markup.button.callback(getMessageByLang('boy', locale(ctx)), DATA_GENDER_MALE),
+            Markup.button.callback(getMessageByLang('girl', locale(ctx)), DATA_GENDER_FEMALE),
         ],
         [
-            Markup.button.callback(getMessageByLang('back', locale), DATA_PROFILE),
+            Markup.button.callback(getMessageByLang('back', locale(ctx)), DATA_PROFILE),
         ]
     ])
 }
@@ -84,10 +86,10 @@ export function getButtonKeys(ctx, models, i, key) {
     return [text, data, nextText, nextData]
 }
 
-export function addBackButton(locale) {
+export function addBackButton(ctx) {
     return Markup.inlineKeyboard([
         [
-            Markup.button.callback(getMessageByLang('back', locale), DATA_PROFILE),
+            Markup.button.callback(getMessageByLang('back', locale(ctx)), DATA_PROFILE),
         ],
     ])
 }
@@ -100,13 +102,30 @@ export function addProfileButton(locale) {
         ],
         [
             Markup.button.callback(getMessageByLang('invite_link_user', locale), DATA_INVITATION_LINK),
+            Markup.button.callback(getMessageByLang('friend_list', locale), DATA_FRIEND_LIST),
         ],
         [
             // Markup.button.callback(getMessageByLang('choose_language', locale), DATA_LANGUAGE),
             Markup.button.callback(getMessageByLang('donate', locale), DATA_TARIFF_PLAN),
+            Markup.button.callback(getMessageByLang('about_me', locale), DATA_ABOUT_ME),
         ],
         [
             Markup.button.callback(getMessageByLang('back', locale), DATA_PROFILE),
         ]
     ])
 }
+
+export const webAppButton = (ctx) => {
+
+    try {
+        setTimeout(() => {
+            ctx.deleteMessage(ctx?.message?.message_id + 1)
+        }, 30000)
+    } catch (e) {
+        console.log('webAppButton deleteMessage', e.message)
+    }
+
+    return Markup.inlineKeyboard([
+        Markup.button.webApp(getMessageByLang('play', locale(ctx)), `${process.env.WEB_APP_URL}/search`)
+    ])
+};

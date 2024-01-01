@@ -17,7 +17,7 @@ import {
     DATA_PROFILE,
     DATA_GENDER_FEMALE,
     DATA_GENDER_MALE,
-    DATA_GENDER, DATA_AGE, DATA_INVITATION_LINK, DATA_LANGUAGE,
+    DATA_GENDER, DATA_AGE, DATA_INVITATION_LINK, DATA_LANGUAGE, DATA_FRIEND_LIST, DATA_ABOUT_ME,
 } from "./utils/buttons/userButtons.js";
 import {handleAddGender, sceneAddAge} from "./handlers/handleUserRegister.js";
 import {
@@ -35,9 +35,9 @@ import {
     DATA_TARIFF_PLAN_WEEK
 } from "./utils/buttons/paymentButtons.js";
 import {
-    handleActionProfile, handleLanguage,
+    handleActionProfile, handleLanguage, handlePlayGame,
     handleProfile,
-    handleProfileAge,
+    handleProfileAge, handleProfileFriendList,
     handleProfileGender,
     handleProfileInvitationLink, handleProfileLanguage,
 } from "./handlers/handleProfile.js";
@@ -125,11 +125,14 @@ export async function runBot(bot) {
     bot.action(DATA_PAYMENT, handlePaymentSendRequest)
 
     bot.command('profile', handleProfile)
+    bot.command('play', handlePlayGame)
     bot.action(DATA_PROFILE, handleActionProfile)
+    bot.action(DATA_ABOUT_ME, handleActionProfile)
     bot.action(DATA_GENDER, handleProfileGender)
     bot.action(DATA_AGE, handleProfileAge)
     bot.action(DATA_LANGUAGE, handleProfileLanguage)
     bot.action(DATA_INVITATION_LINK, handleProfileInvitationLink)
+    bot.action(DATA_FRIEND_LIST, handleProfileFriendList)
     bot.action(DATA_GENDER_MALE, handleAddGender)
     bot.action(DATA_GENDER_FEMALE, handleAddGender)
 
@@ -157,8 +160,7 @@ export async function runBot(bot) {
         }
     }
 
-    console.log('Bot started!', options)
-    await bot.launch(options)
+    bot.launch(options).then(() => console.log('Bot started!')).catch((error) => console.log(error))
 
     await bot.telegram.sendMessage(getAdmins()[0], 'Я запущен')
 

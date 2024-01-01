@@ -38,7 +38,7 @@ if (WEBHOOK_DOMAIN) {
 server.listen(PORT, async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync({alter: true})
+        // await sequelize.sync({alter: true})
         await runBot(bot);
         console.log(`Server is running on port ${process.env.PORT}`)
     } catch (e: any) {

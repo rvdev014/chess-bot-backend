@@ -2,10 +2,11 @@ import {UserService} from "../services/UserService.ts";
 import {addProfileButton} from "../utils/buttons/userButtons.js";
 import {getMessageByLang} from "../helpers/other.js";
 import {locale} from "../utils/consts.js";
+import {Friends, User} from "../models/models";
 
 export default async function handleStart(ctx) {
     try {
-        const referral = ctx.startPayload
+        const referral = parseInt(ctx.startPayload)
         const message = ctx.update.message
         const from = message.from
 
@@ -22,6 +23,22 @@ export default async function handleStart(ctx) {
         const startHello = getMessageByLang('start_hello', locale(ctx));
 
         await ctx.reply(startHello, addProfileButton(locale(ctx)))
+
+        if (referral) {
+            const friend = await User?.findOne({ where: {user_id: referral} })
+
+            await Friends?.findOrCreate({
+                where: {
+                    user_id: ctx.from.id,
+                    friend_id: referral
+                },
+                defaults: {
+                    friend_name: friend?.username,
+                    username: from.username
+                }
+            })
+        }
+
     } catch (e) {
         console.error('handleStart', e.message)
     }

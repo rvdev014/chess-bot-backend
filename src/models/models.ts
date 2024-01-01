@@ -1,5 +1,5 @@
 import sequelize from '../db'
-import {DataTypes, Model, ModelDefined, Optional} from 'sequelize'
+import {DataTypes, ModelDefined} from 'sequelize'
 import {
     GameAttributes,
     GameCreationAttributes,
