@@ -126,6 +126,6 @@ export const webAppButton = (ctx) => {
     }
 
     return Markup.inlineKeyboard([
-        Markup.button.webApp(getMessageByLang('play', locale(ctx)), `${process.env.WEB_APP_URL}/search`)
+        Markup.button.webApp(getMessageByLang('play', locale(ctx)), `${process.env.WEB_APP_URL}`)
     ])
 };

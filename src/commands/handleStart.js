@@ -6,7 +6,7 @@ import {Friends, User} from "../models/models";
 
 export default async function handleStart(ctx) {
     try {
-        const referral = parseInt(ctx.startPayload)
+        const referral = parseInt(ctx.startPayload) ?? 0
         const message = ctx.update.message
         const from = message.from
 
@@ -14,10 +14,9 @@ export default async function handleStart(ctx) {
             user_id: from.id,
             username: from.username,
             name: from.first_name,
-            last_name: from.last_name,
+            last_name: from.last_name ?? '',
             language_code: from.language_code,
-            active: true,
-            referral
+            active: true
         })
 
         const startHello = getMessageByLang('start_hello', locale(ctx));
@@ -40,6 +39,6 @@ export default async function handleStart(ctx) {
         }
 
     } catch (e) {
-        console.error('handleStart', e.message)
+        console.error('handleStart', e.message, e)
     }
 }

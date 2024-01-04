@@ -9,6 +9,7 @@ import GameController from "./controllers/GameController"
 import {Telegraf} from "telegraf";
 import {runBot} from "./bot";
 import {BOT_TOKEN, PORT, WEBHOOK_DOMAIN, WEBHOOK_PATH} from "./config";
+import {createClient} from "redis";
 
 const app = express()
 
@@ -22,12 +23,12 @@ app.get('/game/search', GameController.searchOpponent)
 app.get('/game/remove-from-queue', GameController.removeFromQueue)
 
 socketInit(server)
-/*export const redis = createClient();
-redis.connect()
+export const redis = createClient();
+redis.connect().then(r => console.log(r)).catch(error => console.log(error))
 redis.on('connect', () => {
     console.log('Redis connected')
-    redis.flushDb()
-})*/
+    redis.flushDb().then(r => console.log(r)).catch(error => console.log(error))
+})
 
 const bot = new Telegraf(BOT_TOKEN);
 
