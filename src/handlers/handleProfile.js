@@ -6,7 +6,7 @@ import {
 } from "../utils/buttons/userButtons.js";
 import {locale, sceneIds} from "../utils/consts.js";
 import {getMessageByLang} from "../helpers/other.js";
-import {Friends, User} from "../models/models.ts";
+import {Friend, User} from "../models/models.ts";
 import {Op} from "sequelize";
 
 export async function handleActionProfile(ctx) {
@@ -109,7 +109,7 @@ export async function handleProfileFriendList(ctx) {
         await ctx.deleteMessage()
         let message = '<b>' + getMessageByLang('friend_list', locale(ctx)) + '\n</b>'
 
-        const friends = await Friends.findAll({
+        const friends = await Friend.findAll({
             where: {[Op.or]: [{user_id: ctx.from.id}, {friend_id: ctx.from.id}]}
         })
 

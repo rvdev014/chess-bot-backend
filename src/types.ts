@@ -1,6 +1,6 @@
 export interface IClient {
     userId?: string;
-    socketId: string;
+    socketId: string | null;
     timeLeft?: number;
 }
 
@@ -9,17 +9,23 @@ export type GameOverReasonType = 'checkmate' | 'timeout' | 'resign' | 'draw' | '
 
 export interface IGame {
     roomId: string;
-    white: IClient;
-    black: IClient;
     currentTurn: SideType | null;
     lastFen: string | null;
-
+    timeLimit: number | null;
     winner?: SideType | null;
     reason?: string | null;
+
+    white: IClient;
+    black: IClient;
 }
 
 export type TGame = { [key: string]: IGame }
 export type TQueue = { [key: string]: IClient }
+
+export interface ICreateRoomState {
+    friendId: string;
+    timeLimit: number;
+}
 
 export interface IMoveState {
     movement: any;

@@ -38,7 +38,7 @@ export const Chat = sequelize.define('chat', {
     timestamps: false,
 })
 
-export const Friends = sequelize.define('friend', {
+export const Friend = sequelize.define('friend', {
     friend_id: {type: DataTypes.BIGINT},
     friend_name: {type: DataTypes.STRING},
     user_id: {type: DataTypes.BIGINT},
