@@ -10,6 +10,7 @@ import {Telegraf} from "telegraf";
 import {runBot} from "./bot";
 import {BOT_TOKEN, PORT, WEBHOOK_DOMAIN, WEBHOOK_PATH} from "./config";
 import {createClient} from "redis";
+import UserController from "./controllers/UserController";
 
 const app = express()
 
@@ -18,9 +19,14 @@ app.use(express.json())
 
 const server = createServer(app)
 
+app.post('/user/:userId/share', UserController.share)
+app.get('/user/:chatId', UserController.getUserByChatId)
+app.get('/user/:chatId/friends', UserController.getUserFriends)
 app.get('/game', GameController.index)
 app.get('/game/search', GameController.searchOpponent)
 app.get('/game/remove-from-queue', GameController.removeFromQueue)
+
+export const bot = new Telegraf(BOT_TOKEN);
 
 socketInit(server)
 export const redis = createClient();
@@ -29,8 +35,6 @@ redis.on('connect', () => {
     console.log('Redis connected')
     redis.flushDb().then(r => console.log(r)).catch(error => console.log(error))
 })
-
-const bot = new Telegraf(BOT_TOKEN);
 
 if (WEBHOOK_DOMAIN) {
     app.use(bot.webhookCallback(WEBHOOK_PATH));

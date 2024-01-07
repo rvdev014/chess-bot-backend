@@ -38,12 +38,15 @@ export const Chat = sequelize.define('chat', {
     timestamps: false,
 })
 
-export const Friends = sequelize.define('friend', {
+export const Friend = sequelize.define('friend', {
     friend_id: {type: DataTypes.BIGINT},
     friend_name: {type: DataTypes.STRING},
     user_id: {type: DataTypes.BIGINT},
     user_name: {type: DataTypes.STRING},
 })
+
+Friend.belongsTo(User, {foreignKey: 'user_id', as: 'user'})
+Friend.belongsTo(User, {foreignKey: 'friend_id', as: 'friend'})
 
 export const Show = sequelize.define('show', {
     forward_id:         {type: DataTypes.BIGINT,  defaultValue: null},
