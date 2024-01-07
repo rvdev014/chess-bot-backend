@@ -83,5 +83,7 @@
     "about_me": "About me",
     "about_me_desc": "Name: :name\n Age: :age\n Gender: :gender\n Language: :language\n Friends: :friends_count\n Total games: :total_games\n Games won: :games_won\n Lost games: :games_lost\n",
     "user_deleted": "Contact deleted",
-    "forward": "Your friend invites you to play chess\uD83D\uDE0E. Click on this link\uD83D\uDC49"
+    "forward": "Your friend invites you to play chess\uD83D\uDE0E. Click on this link\uD83D\uDC49",
+    "go_to_game_button": "Go to game",
+    "go_to_game_message": "Your friend @:username invites you to play chess with him. Click the button below \uD83D\uDC47"
 }

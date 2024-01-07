@@ -116,9 +116,9 @@ export async function handleProfileFriendList(ctx) {
         const list = [];
 
         friends.map((friend, key) => {
-            if (friend?.friend_id !== ctx.from.id) {
+            if (parseInt(friend?.friend_id) !== ctx.from.id) {
                 list.push(`${key + 1}) <b>${friend?.friend_name ?? getMessageByLang('user_deleted', locale(ctx))}</b>\n`)
-            } else if (friend?.user_id !== ctx.from.id) {
+            } else if (parseInt(friend?.user_id) !== ctx.from.id) {
                 list.push(`${key + 1}) <b>${friend?.user_name ?? getMessageByLang('user_deleted', locale(ctx))}</b>\n`)
             }
         })

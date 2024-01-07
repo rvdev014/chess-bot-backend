@@ -34,7 +34,7 @@ export default async function handleStart(ctx) {
                     },
                     defaults: {
                         friend_name: friend?.username,
-                        username: from.username
+                        user_name: from.username
                     }
                 })
             }

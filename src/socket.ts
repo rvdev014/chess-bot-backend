@@ -7,6 +7,7 @@ import {bot} from "./index";
 import {Markup} from "telegraf";
 import {User} from "./models/models";
 import {UserAttributes, UserCreationAttributes} from "./models/types";
+import {getMessageByLang} from "./helpers/other";
 
 export const games: TGame = {}
 export const queue: TQueue = {}
@@ -96,11 +97,13 @@ export default function socketInit(server: HttpServer) {
                     where: {user_id: currentClient.userId}
                 });
 
+                const locale = user?.language_code ?? 'ru';
+
                 await bot.telegram.sendMessage(
                     createRoomState.friendId,
-                    `Ваш друг ${user?.username ?? currentClient?.userId} приглашает вас сыграть с ним в шахматы. Нажмите кнопку ниже 👇`,
+                    getMessageByLang('go_to_game_message', locale).replace(':username', user?.username ?? currentClient?.userId),
                     Markup.inlineKeyboard([
-                        Markup.button.webApp('Перейти в игру', inviteUrl)
+                        Markup.button.webApp(getMessageByLang('go_to_game_button', locale), inviteUrl)
                     ])
                 )
             } catch (e) {

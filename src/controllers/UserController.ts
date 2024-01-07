@@ -3,6 +3,7 @@ import {Friend, User} from "../models/models";
 import {bot} from "../index";
 import {Markup} from "telegraf";
 import {Op} from "sequelize";
+import {getMessageByLang} from "../helpers/other";
 
 class UserController {
     public async friends(req: Request, res: Response): Promise<Response> {
@@ -12,10 +13,15 @@ class UserController {
     public async getUserFriends(req: Request, res: Response): Promise<Response> {
         try {
             const {chatId} = req.params
+
+            if (chatId === 'null') return res.json([])
+
             const friends = await Friend.findAll({
                 where: {[Op.or]: [{user_id: chatId}, {friend_id: chatId}]}
             });
-            if (!friends) return res.status(404).json({message: 'User not found'})
+
+            if (!friends) return res.json([])
+
             return res.json(friends)
         } catch (e) {
             console.log(e)
@@ -33,30 +39,40 @@ class UserController {
             console.log('inviteUrl', inviteUrl)
 
             const friends = await Friend.findAll({
-                where: {
-                    user_id: userId,
-                    friend_id: friendIds
-                },
-                include: {
-                    model: User,
-                    as: 'user'
-                }
+                where: {[Op.or]: [{user_id: userId, friend_id: friendIds}, {friend_id: userId, user_id: friendIds}]},
             });
 
-            console.log('friends', friends)
+            friends.map((friend: any, key) => {
+                const locale = friend?.language_code ?? 'ru';
 
-            // BUG
-            // TODO: send message to friends
+                const id   = parseInt(friend?.friend_id) === parseInt(userId) ? friend?.user_id   : friend?.friend_id;
+                const name = parseInt(friend?.friend_id) === parseInt(userId) ? friend?.user_name : friend?.friend_name;
 
-            friends.forEach((friend: any) => {
-                bot.telegram.sendMessage(
-                    friend.user.id,
-                    `Ваш друг @${friend.user.username} приглашает вас сыграть с ним в шахматы. Перейдите по ссылке ${inviteUrl}`,
-                    Markup.inlineKeyboard([
-                        Markup.button.webApp('Перейти в игру', inviteUrl)
-                    ])
-                )
+                try {
+                    bot.telegram.sendMessage(
+                        id,
+                        getMessageByLang('go_to_game_message', locale).replace(':username', name),
+                        Markup.inlineKeyboard([
+                            Markup.button.webApp(getMessageByLang('go_to_game_button', locale), inviteUrl)
+                        ])
+                    )
+                } catch (e: any) {
+                    console.log(e?.message)
+                }
+
             })
+
+            // friends.forEach((friend: any) => {
+            //     const locale = friend?.dataValues?.language_code ?? 'ru';
+            //     console.log(locale, friend?.dataValues)
+            //     bot.telegram.sendMessage(
+            //         friend?.dataValues?.id,
+            //         getMessageByLang('go_to_game_message', locale).replace(':username', friend?.dataValues?.username),
+            //         Markup.inlineKeyboard([
+            //             Markup.button.webApp(getMessageByLang('go_to_game_button', locale), inviteUrl)
+            //         ])
+            //     )
+            // })
 
             return res.json({message: 'Success'})
         } catch (e) {

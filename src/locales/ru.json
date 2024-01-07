@@ -84,5 +84,7 @@
     "about_me_desc": "Обо мне",
     "user_deleted": "Удалённый контакт",
     "forward": "Переслать",
-    "invite_link_click": "Твой знакомый зовёт тебя в шахматы\uD83D\uDE0E. Нажми на эту ссылку\uD83D\uDC49"
+    "invite_link_click": "Твой знакомый зовёт тебя в шахматы\uD83D\uDE0E. Нажми на эту ссылку\uD83D\uDC49",
+    "go_to_game_button": "Перейти в игру",
+    "go_to_game_message": "Ваш друг @:username приглашает вас сыграть с ним в шахматы. Нажмите кнопку ниже \uD83D\uDC47"
 }
