@@ -4,6 +4,7 @@ import {v4 as uuidv4} from "uuid"
 import {ICreateRoomState, IGameOverState, IMoveState, TGame, TQueue} from "./types";
 import {CLIENT_URL} from "./config";
 import {bot} from "./index";
+import {Markup} from "telegraf";
 
 export const games: TGame = {}
 export const queue: TQueue = {}
@@ -90,7 +91,10 @@ export default function socketInit(server: HttpServer) {
 
             await bot.telegram.sendMessage(
                 createRoomState.friendId,
-                `Ваш друг ${currentClient.userId} приглашает вас сыграть с ним в шахматы. Перейдите по ссылке ${inviteUrl}`
+                `Ваш друг ${currentClient.userId} приглашает вас сыграть с ним в шахматы. Перейдите по ссылке ${inviteUrl}`,
+                Markup.inlineKeyboard([
+                    Markup.button.webApp('Перейти в игру', inviteUrl)
+                ])
             )
         });
 

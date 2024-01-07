@@ -19,6 +19,7 @@ app.use(express.json())
 
 const server = createServer(app)
 
+app.post('/user/:userId/share', UserController.share)
 app.get('/user/:chatId', UserController.getUserByChatId)
 app.get('/user/:chatId/friends', UserController.getUserFriends)
 app.get('/game', GameController.index)
