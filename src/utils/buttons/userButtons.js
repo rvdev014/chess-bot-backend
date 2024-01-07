@@ -94,6 +94,17 @@ export function addBackButton(ctx) {
     ])
 }
 
+
+export function addLinkWithBackButton(ctx) {
+    const message = getMessageByLang('invite_link_click', locale(ctx))
+    return Markup.inlineKeyboard([
+        [
+            Markup.button.callback(getMessageByLang('back', locale(ctx)), DATA_PROFILE),
+            Markup.button.switchToChat(getMessageByLang('forward', locale(ctx)), `${message} https://t.me/${process.env.BOT_NAME}?start=${ctx.from.id}`),
+        ],
+    ])
+}
+
 export function addProfileButton(locale) {
     return Markup.inlineKeyboard([
         [

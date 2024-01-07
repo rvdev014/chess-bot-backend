@@ -1,7 +1,7 @@
 import {
     addBackButton,
     addGenderButton,
-    addLanguageButton,
+    addLanguageButton, addLinkWithBackButton,
     addProfileButton, webAppButton
 } from "../utils/buttons/userButtons.js";
 import {locale, sceneIds} from "../utils/consts.js";
@@ -97,7 +97,7 @@ export async function handleProfileInvitationLink(ctx) {
         const message = getMessageByLang('invite_link', locale(ctx))
         await ctx.replyWithHTML(
             `<b>${message}</b>\n\nhttps://t.me/${process.env.BOT_NAME}?start=${ctx.from.id}`,
-            addBackButton(ctx)
+            addLinkWithBackButton(ctx)
         )
     } catch (e) {
         console.log(e)
@@ -116,10 +116,10 @@ export async function handleProfileFriendList(ctx) {
         const list = [];
 
         friends.map((friend, key) => {
-            if (friend?.friend_id !== ctx.from.id) {
-                list.push(`${key + 1}) <b>${friend?.friend_name}</b>\n`)
-            } else if (friend?.user_id !== ctx.from.id) {
-                list.push(`${key + 1}) <b>${friend?.user_name}</b>\n`)
+            if (parseInt(friend?.friend_id) !== ctx.from.id) {
+                list.push(`${key + 1}) <b>${friend?.friend_name ?? getMessageByLang('user_deleted', locale(ctx))}</b>\n`)
+            } else if (parseInt(friend?.user_id) !== ctx.from.id) {
+                list.push(`${key + 1}) <b>${friend?.user_name ?? getMessageByLang('user_deleted', locale(ctx))}</b>\n`)
             }
         })
 

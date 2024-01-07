@@ -5,6 +5,9 @@ import {ICreateRoomState, IGameOverState, IMoveState, TGame, TQueue} from "./typ
 import {CLIENT_URL} from "./config";
 import {bot} from "./index";
 import {Markup} from "telegraf";
+import {User} from "./models/models";
+import {UserAttributes, UserCreationAttributes} from "./models/types";
+import {getMessageByLang} from "./helpers/other";
 
 export const games: TGame = {}
 export const queue: TQueue = {}
@@ -89,13 +92,23 @@ export default function socketInit(server: HttpServer) {
             socket.data.roomId = roomId
             socket.data.side = 'white'
 
-            await bot.telegram.sendMessage(
-                createRoomState.friendId,
-                `Ваш друг ${currentClient.userId} приглашает вас сыграть с ним в шахматы. Перейдите по ссылке ${inviteUrl}`,
-                Markup.inlineKeyboard([
-                    Markup.button.webApp('Перейти в игру', inviteUrl)
-                ])
-            )
+            try {
+                const user: any = await User.findOne({
+                    where: {user_id: currentClient.userId}
+                });
+
+                const locale = user?.language_code ?? 'ru';
+
+                await bot.telegram.sendMessage(
+                    createRoomState.friendId,
+                    getMessageByLang('go_to_game_message', locale).replace(':username', user?.username ?? currentClient?.userId),
+                    Markup.inlineKeyboard([
+                        Markup.button.webApp(getMessageByLang('go_to_game_button', locale), inviteUrl)
+                    ])
+                )
+            } catch (e) {
+                console.log(e)
+            }
         });
 
         socket.on("game:create-room-cancel", async () => {
