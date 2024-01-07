@@ -81,5 +81,8 @@
     "play_game": "Войти в игру",
     "play": "Играть",
     "about_me": "Обо мне",
-    "about_me_desc": "Обо мне"
+    "about_me_desc": "Обо мне",
+    "user_deleted": "Удалённый контакт",
+    "forward": "Переслать",
+    "invite_link_click": "Твой знакомый зовёт тебя в шахматы\uD83D\uDE0E. Нажми на эту ссылку\uD83D\uDC49"
 }

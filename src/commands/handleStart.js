@@ -26,16 +26,18 @@ export default async function handleStart(ctx) {
         if (referral) {
             const friend = await User?.findOne({ where: {user_id: referral} })
 
-            await Friends?.findOrCreate({
-                where: {
-                    user_id: ctx.from.id,
-                    friend_id: referral
-                },
-                defaults: {
-                    friend_name: friend?.username,
-                    username: from.username
-                }
-            })
+            if (referral !== ctx.from.id) {
+                await Friends?.findOrCreate({
+                    where: {
+                        user_id: ctx.from.id,
+                        friend_id: referral
+                    },
+                    defaults: {
+                        friend_name: friend?.username,
+                        username: from.username
+                    }
+                })
+            }
         }
 
     } catch (e) {

@@ -81,5 +81,7 @@
     "play_game": "Go to game",
     "play": "Play",
     "about_me": "About me",
-    "about_me_desc": "Name: :name\n Age: :age\n Gender: :gender\n Language: :language\n Friends: :friends_count\n Total games: :total_games\n Games won: :games_won\n Lost games: :games_lost\n"
+    "about_me_desc": "Name: :name\n Age: :age\n Gender: :gender\n Language: :language\n Friends: :friends_count\n Total games: :total_games\n Games won: :games_won\n Lost games: :games_lost\n",
+    "user_deleted": "Contact deleted",
+    "forward": "Your friend invites you to play chess\uD83D\uDE0E. Click on this link\uD83D\uDC49"
 }
