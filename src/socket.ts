@@ -6,7 +6,6 @@ import {CLIENT_URL} from "./config";
 import {bot} from "./index";
 import {Markup} from "telegraf";
 import {User} from "./models/models";
-import {UserAttributes, UserCreationAttributes} from "./models/types";
 import {getMessageByLang} from "./helpers/other";
 
 export const games: TGame = {}

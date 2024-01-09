@@ -34,10 +34,6 @@ class UserController {
             const {userId} = req.params
             const {friendIds, inviteUrl} = req.body
 
-            console.log('userId', userId)
-            console.log('friendIds', friendIds)
-            console.log('inviteUrl', inviteUrl)
-
             const friends = await Friend.findAll({
                 where: {[Op.or]: [{user_id: userId, friend_id: friendIds}, {friend_id: userId, user_id: friendIds}]},
             });
