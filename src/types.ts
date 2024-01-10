@@ -35,6 +35,13 @@ export interface IMoveState {
     blackTimeLeft: number;
 }
 
+export interface IGameStartState {
+    opponent: IClient;
+    mySide: SideType;
+    roomId: string;
+    timeLimit: number;
+}
+
 export interface IGameOverState {
     winner: SideType;
     reason: GameOverReasonType;

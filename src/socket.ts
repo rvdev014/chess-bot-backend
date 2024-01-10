@@ -55,21 +55,27 @@ export default function socketInit(server: HttpServer) {
                     })
                 })
 
-                socket.emit("game:started", opponent, 'black', roomId)
-                io.to(opponent.socketId).emit("game:started", currentClient, 'white', roomId)
+                socket.emit("game:started", {
+                    opponent,
+                    mySide: 'black',
+                    roomId,
+                    timeLimit: null,
+                })
+                io.to(opponent.socketId).emit("game:started", {
+                    opponent: currentClient,
+                    mySide: 'white',
+                    roomId,
+                    timeLimit: null,
+                })
                 return
             }
 
             queue[socket.id] = currentClient
         })
 
-        socket.on('game:create-room', async (createRoomState: ICreateRoomState) => {
+        socket.on('game:create-room', async (userId: string, createRoomState: ICreateRoomState) => {
             const roomId = uuidv4()
-            console.log('createRoomState', createRoomState)
-            const currentClient = {
-                userId: createRoomState.friendId,
-                socketId: socket.id
-            }
+            const currentClient = {userId, socketId: socket.id}
 
             games[roomId] = {
                 roomId,
@@ -84,7 +90,6 @@ export default function socketInit(server: HttpServer) {
             }
 
             const inviteUrl = `${CLIENT_URL}/friend/${roomId}`
-            console.log('inviteUrl', inviteUrl)
             socket.emit("game:room-created", inviteUrl)
 
             socket.join(roomId)
@@ -125,8 +130,8 @@ export default function socketInit(server: HttpServer) {
             games[roomId] = {
                 ...game,
                 black: {
+                    ...game.black,
                     socketId: socket.id,
-                    userId: game.black.userId
                 }
             }
 
@@ -135,8 +140,18 @@ export default function socketInit(server: HttpServer) {
                 socket.join(roomId)
                 socket.data.roomId = roomId
                 socket.data.side = 'black'
-                socket.emit("game:started", opponent, 'black', roomId)
-                io.to(opponent.socketId).emit("game:started", game.black, 'white', roomId)
+                socket.emit("game:started", {
+                    opponent,
+                    mySide: 'black',
+                    roomId,
+                    timeLimit: game.timeLimit,
+                })
+                io.to(opponent.socketId).emit("game:started", {
+                    opponent: game.black,
+                    mySide: 'white',
+                    roomId,
+                    timeLimit: game.timeLimit,
+                })
             }
 
         });
