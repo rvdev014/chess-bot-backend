@@ -31,7 +31,8 @@
     "wav": "^1.0.2"
   },
   "scripts": {
-    "dev": "nodemon --exec ts-node ./src/index.ts"
+    "dev": "nodemon --exec ts-node ./src/index.ts",
+    "start": "ts-node ./src/index.ts"
   },
   "devDependencies": {
     "cors": "^2.8.5"
