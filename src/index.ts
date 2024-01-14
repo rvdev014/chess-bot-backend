@@ -30,7 +30,10 @@ export const bot = new Telegraf(BOT_TOKEN);
 
 socketInit(server)
 export const redis = createClient();
-redis.connect().then(r => console.log(r)).catch(error => console.log(error))
+redis.connect()
+    .then(r => console.log(r))
+    .catch(error => console.log(error))
+
 redis.on('connect', () => {
     console.log('Redis connected')
     redis.flushDb().then(r => console.log(r)).catch(error => console.log(error))
@@ -43,7 +46,6 @@ if (WEBHOOK_DOMAIN) {
 server.listen(PORT, async () => {
     try {
         await sequelize.authenticate()
-        // await sequelize.sync({alter: true})
         await runBot(bot);
         console.log(`Server is running on port ${process.env.PORT}`)
     } catch (e: any) {
