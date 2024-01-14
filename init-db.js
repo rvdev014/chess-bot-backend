@@ -1,4 +1,6 @@
 const sequelize = require("./src/db.js");
 
-await sequelize.authenticate()
-await sequelize.sync({alter: true})
+(async () => {
+    await sequelize.authenticate()
+    await sequelize.sync({alter: true})
+})()
