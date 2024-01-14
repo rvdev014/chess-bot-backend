@@ -1,4 +1,4 @@
-const sequelize = require("./src/db.js");
+import sequelize from "./db"
 
 (async () => {
     await sequelize.authenticate()
